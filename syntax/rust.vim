@@ -16,9 +16,10 @@ endif
 " Basic keywords {{{2
 syn keyword   rustConditional match if else
 syn keyword   rustRepeat for loop while
-syn keyword   rustTypedef type nextgroup=rustIdentifier skipwhite skipempty
-syn keyword   rustStructure struct enum nextgroup=rustIdentifier skipwhite skipempty
-syn keyword   rustUnion union nextgroup=rustIdentifier skipwhite skipempty contained
+syn keyword   rustTypedef type nextgroup=rustClassIdentifier skipwhite skipempty
+syn keyword   rustStructure struct enum nextgroup=rustClassIdentifier skipwhite skipempty
+syn keyword   rustKeyword impl nextgroup=rustClassIdentifier skipwhite skipempty
+syn keyword   rustUnion union nextgroup=rustClassIdentifier skipwhite skipempty contained
 syn match rustUnionContextual /\<union\_s\+\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*/ transparent contains=rustUnion
 syn keyword   rustOperator    as
 
@@ -29,7 +30,7 @@ syn keyword   rustKeyword     box nextgroup=rustBoxPlacement skipwhite skipempty
 syn keyword   rustKeyword     continue
 syn keyword   rustKeyword     extern nextgroup=rustExternCrate,rustObsoleteExternMod skipwhite skipempty
 syn keyword   rustKeyword     fn nextgroup=rustFuncName skipwhite skipempty
-syn keyword   rustKeyword     in impl let
+syn keyword   rustKeyword     in let
 syn keyword   rustKeyword     macro
 syn keyword   rustKeyword     pub nextgroup=rustPubScope skipwhite skipempty
 syn keyword   rustKeyword     return
@@ -55,6 +56,7 @@ syn match   rustExternCrateString /".*"\_s*as/ contained nextgroup=rustIdentifie
 syn keyword   rustObsoleteExternMod mod contained nextgroup=rustIdentifier skipwhite skipempty
 
 syn match     rustIdentifier  contains=rustIdentifierPrime "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
+syn match     rustClassIdentifier "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
 syn match     rustFuncName    "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
 
 syn region    rustBoxPlacement matchgroup=rustBoxPlacementParens start="(" end=")" contains=TOP contained
@@ -104,12 +106,15 @@ syn keyword rustEnumVariant Some None
 syn keyword rustKeyword Result
 syn keyword rustEnumVariant Ok Err
 syn keyword rustTrait SliceConcatExt
-syn keyword rustTrait String ToString
+syn keyword rustTrait ToString
 syn keyword rustKeyword Vec
+syn keyword rustKeyword String
 
 " Other syntax {{{2
 syn keyword   rustSelf        self
 syn keyword   rustBoolean     true false
+
+" syn match Type "\v[A-Z]\w*[a-z0-9]"
 
 " If foo::bar changes to foo.bar, change this ("::" to "\.").
 " If foo::bar changes to Foo::bar, change this (first "\w" to "\u").
@@ -272,6 +277,7 @@ hi def link rustAssert        PreCondit
 hi def link rustPanic         PreCondit
 hi def link rustMacro         Macro
 hi def link rustType          Type
+hi def link rustClassIdentifier Type
 hi def link rustTodo          Todo
 hi def link rustAttribute     PreProc
 hi def link rustDerive        PreProc
