@@ -73,8 +73,8 @@ syn match rustMacroVariable "$\w\+"
 syn keyword   rustReservedKeyword alignof become do offsetof priv pure sizeof typeof unsized abstract virtual final override
 
 " Built-in types {{{2
-syn keyword   rustType        isize usize char bool u8 u16 u32 u64 u128 f32
-syn keyword   rustType        f64 i8 i16 i32 i64 i128 str Self
+syn keyword   rustKeyword        isize usize char bool u8 u16 u32 u64 u128 f32
+syn keyword   rustKeyword        f64 i8 i16 i32 i64 i128 str Self
 
 " Things from the libstd v1 prelude (src/libstd/prelude/v1.rs) {{{2
 " This section is just straight transformation of the contents of the prelude,
@@ -99,13 +99,13 @@ syn keyword rustTrait AsRef AsMut Into From
 syn keyword rustTrait Default
 syn keyword rustTrait Iterator Extend IntoIterator
 syn keyword rustTrait DoubleEndedIterator ExactSizeIterator
-syn keyword rustEnum Option
+syn keyword rustKeyword Option
 syn keyword rustEnumVariant Some None
-syn keyword rustEnum Result
+syn keyword rustKeyword Result
 syn keyword rustEnumVariant Ok Err
 syn keyword rustTrait SliceConcatExt
 syn keyword rustTrait String ToString
-syn keyword rustTrait Vec
+syn keyword rustKeyword Vec
 
 " Other syntax {{{2
 syn keyword   rustSelf        self
@@ -250,7 +250,7 @@ hi def link rustUnion         rustStructure
 hi def link rustPubScopeDelim Delimiter
 hi def link rustPubScopeCrate rustKeyword
 hi def link rustSuper         rustKeyword
-hi def link rustUnsafeKeyword Exception
+hi def link rustUnsafeKeyword Error
 hi def link rustReservedKeyword Error
 hi def link rustRepeat        Conditional
 hi def link rustConditional   Conditional
