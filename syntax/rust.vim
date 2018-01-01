@@ -17,8 +17,9 @@ endif
 syn keyword   rustConditional match if else
 syn keyword   rustRepeat for loop while
 syn keyword   rustTypedef type nextgroup=rustClassIdentifier skipwhite skipempty
-syn keyword   rustStructure struct enum nextgroup=rustClassIdentifier skipwhite skipempty
-syn keyword   rustKeyword impl nextgroup=rustClassIdentifier skipwhite skipempty
+syn keyword   rustStructure struct enum nextgroup=rustWithLifetime,rustClassIdentifier skipwhite skipempty
+syn keyword   rustKeyword impl nextgroup=rustWithLifetime,rustClassIdentifier skipwhite skipempty
+syn keyword   rustImplFor for nextgroup=rustClassIdentifier skipwhite skipempty
 syn keyword   rustUnion union nextgroup=rustClassIdentifier skipwhite skipempty contained
 syn match rustUnionContextual /\<union\_s\+\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*/ transparent contains=rustUnion
 syn keyword   rustOperator    as
@@ -40,7 +41,7 @@ syn keyword   rustKeyword     where
 syn keyword   rustUnsafeKeyword unsafe
 syn keyword   rustKeyword     use nextgroup=rustModPath skipwhite skipempty
 " FIXME: Scoped impl's name is also fallen in this category
-syn keyword   rustKeyword     mod trait nextgroup=rustIdentifier skipwhite skipempty
+syn keyword   rustKeyword     mod trait nextgroup=rustClassIdentifier skipwhite skipempty
 syn keyword   rustStorage     move mut ref static const
 syn match rustDefault /\<default\ze\_s\+\(impl\|fn\|type\|const\)\>/
 
@@ -56,8 +57,10 @@ syn match   rustExternCrateString /".*"\_s*as/ contained nextgroup=rustIdentifie
 syn keyword   rustObsoleteExternMod mod contained nextgroup=rustIdentifier skipwhite skipempty
 
 syn match     rustIdentifier  contains=rustIdentifierPrime "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
-syn match     rustClassIdentifier "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
 syn match     rustFuncName    "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
+
+syn region    rustWithLifetime start=/</ end=/>/ contains=rustLifetime nextgroup=rustClassIdentifier,rustImplFor skipempty skipwhite display contained
+syn match     rustClassIdentifier "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" nextgroup=rustWithLifetime,rustImplFor display contained
 
 syn region    rustBoxPlacement matchgroup=rustBoxPlacementParens start="(" end=")" contains=TOP contained
 " Ideally we'd have syntax rules set up to match arbitrary expressions. Since
@@ -247,6 +250,8 @@ hi def link rustConstant      Constant
 hi def link rustSelf          Constant
 hi def link rustFloat         Float
 hi def link rustArrowCharacter rustOperator
+hi def link rustWithLifetime  rustOperator
+hi def link rustImplFor       rustKeyword
 hi def link rustOperator      Operator
 hi def link rustKeyword       Keyword
 hi def link rustTypedef       Keyword " More precise is Typedef, but it doesn't feel right for Rust
